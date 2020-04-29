@@ -25,7 +25,7 @@ var bitmapPaint = Paint()
 
 var appOpen = false
 
-open class MainActivityCore(private val appNameId: Int, private val ) : Activity() {
+open class MainActivityCore(private val appNameId: Int, var activeWindow: Window) : Activity() {
 
     private lateinit var mainView: MainView
     private lateinit var thread: Thread
@@ -34,8 +34,6 @@ open class MainActivityCore(private val appNameId: Int, private val ) : Activity
     lateinit var sounds: Sounds
     lateinit var music: Music
     lateinit var bitmaps: Bitmaps
-
-    lateinit var activeWindow: Window
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +55,6 @@ open class MainActivityCore(private val appNameId: Int, private val ) : Activity
         sounds = Sounds(this)
         music = Music(this, appNameId)
         bitmaps = Bitmaps(this)
-
-        //load window
-        activeWindow = MainWindow(this)
     }
 
 
