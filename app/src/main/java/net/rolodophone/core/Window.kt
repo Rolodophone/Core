@@ -1,9 +1,10 @@
 package net.rolodophone.core
 
-abstract class Window {
-    abstract val ctx: MainActivityCore
-    abstract val downButtons: MutableList<Button>
-    abstract val upButtons: MutableList<Button>
+abstract class Window(val ctx: MainActivityCore) {
+
+    open val downButtons = mutableListOf<Button>()
+    open val upButtons = mutableListOf<Button>()
+    open val seekables = listOf<Seekable>()
 
     open fun update() {}
     open fun draw() {}

@@ -110,6 +110,19 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (gestureDetector.onTouchEvent(event)) return true
+
+        if (event.action == MotionEvent.ACTION_UP) {
+            for (seekable in activeWindow.seekables) if (seekable.handleStoppingSeek()) {
+                return true
+            }
+        }
+
+        if (event.action == MotionEvent.ACTION_MOVE) {
+            for (seekable in activeWindow.seekables) if (seekable.handleSeek(event.x, event.y)) {
+                return true
+            }
+        }
+
         return super.onTouchEvent(event)
     }
 
@@ -119,6 +132,10 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
         override fun onDown(event: MotionEvent): Boolean {
             for (button in activeWindow.downButtons) if (button.handleClick(event.x, event.y)) {
                 skipNextUp = true
+                return true
+            }
+
+            for (seekable in activeWindow.seekables) if (seekable.handleStartingSeek(event.x, event.y)) {
                 return true
             }
 
@@ -133,6 +150,14 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
             }
             else {
                 skipNextUp = false
+            }
+
+            return false
+        }
+
+        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+            for (seekable in activeWindow.seekables) if (seekable.handleFling(velocityX, velocityY)) {
+                return true
             }
 
             return false
