@@ -1,5 +1,6 @@
 package net.rolodophone.core
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
 class Bitmaps(private val ctx: MainActivityCore) {
@@ -8,7 +9,7 @@ class Bitmaps(private val ctx: MainActivityCore) {
         bitmapOptions.inScaled = false
     }
 
-    fun load(id: Int) {
-        BitmapFactory.decodeResource(ctx.resources, id, bitmapOptions)
+    fun load(id: Int): Bitmap {
+        return BitmapFactory.decodeResource(ctx.resources, id, bitmapOptions)
     }
 }

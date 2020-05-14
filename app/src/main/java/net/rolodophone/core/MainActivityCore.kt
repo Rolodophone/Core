@@ -1,5 +1,3 @@
-@file:Suppress("Annotator")
-
 package net.rolodophone.core
 
 import android.app.Activity
@@ -25,7 +23,7 @@ var bitmapPaint = Paint()
 
 var appOpen = false
 
-open class MainActivityCore(private val appNameId: Int, var activeWindow: Window) : Activity() {
+open class MainActivityCore(private val appNameId: Int, private val activeWindowConstructor: (ctx: MainActivityCore) -> Window) : Activity() {
 
     private lateinit var mainView: MainView
     private lateinit var thread: Thread
@@ -34,6 +32,8 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
     lateinit var sounds: Sounds
     lateinit var music: Music
     lateinit var bitmaps: Bitmaps
+
+    lateinit var activeWindow: Window
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +55,8 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
         sounds = Sounds(this)
         music = Music(this, appNameId)
         bitmaps = Bitmaps(this)
+
+        activeWindow = activeWindowConstructor(this)
     }
 
 
@@ -67,12 +69,12 @@ open class MainActivityCore(private val appNameId: Int, var activeWindow: Window
         //configure window
         window.decorView.systemUiVisibility = when {
             Build.VERSION.SDK_INT >= 19 -> View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            Build.VERSION.SDK_INT >= 16 -> View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+            Build.VERSION.SDK_INT >= 17 -> View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
             else                        -> View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         }
 
         val dim = Point()
-        windowManager.defaultDisplay.getSize(dim)
+        windowManager.defaultDisplay.getRealSize(dim)
 
         width = dim.x.toFloat()
         height = dim.y.toFloat()

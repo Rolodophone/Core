@@ -3,8 +3,12 @@ package net.rolodophone.core
 import android.graphics.RectF
 import androidx.annotation.CallSuper
 
-open class Seekable(val dim: RectF, private val dimExceptions: List<RectF> = listOf(), private val onSeek: (Float, Float) -> Unit, private val onStopSeek: () -> Unit,
-                    private val onFling: (Float, Float) -> Unit) {
+abstract class Seekable(val dim: RectF, private val dimExceptions: List<RectF> = listOf()) {
+
+    abstract fun onSeek(x: Float, y: Float)
+    abstract fun onStopSeek()
+    abstract fun onFling(vx: Float, vy: Float)
+
 
     private var drawnLastFrame = false
     private var visible = false
