@@ -88,7 +88,7 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
         thread.name = "GameThread"
         thread.start()
         music.resume()
-        sounds.resume()
+        sounds.resumeAll()
     }
 
     override fun onPause() {
@@ -106,7 +106,7 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
 
         appOpen = false
         music.pause()
-        sounds.pause()
+        sounds.pauseAll()
         thread.join()
     }
 

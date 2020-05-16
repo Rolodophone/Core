@@ -12,16 +12,17 @@ internal class MainView(private val ctx: MainActivityCore) : SurfaceView(ctx), R
             val initialTime = SystemClock.elapsedRealtime()
 
             if (holder.surface.isValid) {
+                val activeWindowForFrame = ctx.activeWindow
 
                 //update
-                ctx.activeWindow.update()
+                activeWindowForFrame.update()
 
                 //draw
                 val c = holder.lockCanvas()
                 if (c != null) {
                     canvas = c
 
-                    ctx.activeWindow.draw()
+                    activeWindowForFrame.draw()
 
                     holder.unlockCanvasAndPost(canvas)
                 }
