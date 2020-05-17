@@ -29,7 +29,6 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
     private lateinit var thread: Thread
     private lateinit var gestureDetector: GestureDetectorCompat
 
-    lateinit var sounds: Sounds
     lateinit var music: Music
     lateinit var bitmaps: Bitmaps
 
@@ -52,7 +51,6 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
         gestureDetector = GestureDetectorCompat(this, MyGestureListener())
 
         //initialise resources
-        sounds = Sounds(this)
         music = Music(this, appNameId)
         bitmaps = Bitmaps(this)
 
@@ -87,8 +85,6 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
         thread = Thread(mainView)
         thread.name = "GameThread"
         thread.start()
-        music.resume()
-        sounds.resumeAll()
     }
 
     override fun onPause() {
@@ -105,8 +101,6 @@ open class MainActivityCore(private val appNameId: Int, private val activeWindow
         super.onStop()
 
         appOpen = false
-        music.pause()
-        sounds.pauseAll()
         thread.join()
     }
 
